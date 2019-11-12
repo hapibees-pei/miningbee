@@ -2,8 +2,6 @@ use Mix.Config
 
 # Configure your database
 config :miningbee, Miningbee.Repo,
-  username: "postgres",
-  password: "postgres",
   database: "miningbee_test",
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

@@ -21,6 +21,8 @@ defmodule MiningbeeWeb.ConnCase do
       use Phoenix.ConnTest
       alias MiningbeeWeb.Router.Helpers, as: Routes
 
+      import Miningbee.Factory
+
       # The default endpoint for testing
       @endpoint MiningbeeWeb.Endpoint
     end

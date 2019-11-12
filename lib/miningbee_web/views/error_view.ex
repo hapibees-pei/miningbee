@@ -13,4 +13,21 @@ defmodule MiningbeeWeb.ErrorView do
   def template_not_found(template, _assigns) do
     %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
   end
+
+  def render("404.json", _assigns) do
+    %{errors: [%{detail: "Endpoint Not Found"}]}
+  end
+
+  def render("500.json", _assigns) do
+    %{errors: [%{detail: "Internal Server Error"}]}
+  end
+
+  def render("401.json", _assigns) do
+    %{errors: [%{detail: "Not Authorized", status: 401}]}
+  end
+
+  def render("400.json", _assigns) do
+    %{errors: [%{detail: "Bad Request", status: 400}]}
+  end
+  
 end

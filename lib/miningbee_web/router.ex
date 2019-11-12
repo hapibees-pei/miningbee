@@ -7,5 +7,12 @@ defmodule MiningbeeWeb.Router do
 
   scope "/api", MiningbeeWeb do
     pipe_through :api
+
+    scope "/v1" do
+      #Gateways
+      resources "/gateways", GatewayController, only: [:show, :index, :create, :delete]
+      #Sensors
+      #resources "/sensors", SensorController, only: [:show, :index, :create, :update]
+    end
   end
 end
