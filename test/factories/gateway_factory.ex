@@ -3,6 +3,7 @@ defmodule Miningbee.GatewayFactory do
     quote do
       def gateway_factory do
         %Miningbee.Models.Gateway{
+          apiary_id: Ecto.UUID.generate(),
           topic: "topic123"
         }
       end

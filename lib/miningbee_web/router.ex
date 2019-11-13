@@ -10,7 +10,7 @@ defmodule MiningbeeWeb.Router do
 
     scope "/v1" do
       #Gateways
-      resources "/gateways", GatewayController, only: [:show, :index, :create, :delete]
+      resources "/gateways", GatewayController, only: [:show, :index, :create, :update, :delete]
       #Sensors
       #resources "/sensors", SensorController, only: [:show, :index, :create, :update]
     end

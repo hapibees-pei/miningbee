@@ -20,7 +20,7 @@ defmodule Miningbee.Models.Gateway do
   def update_changeset(gateway, attrs) do
     gateway
     |> cast(attrs, [:topic])
-    |> validate_required(attrs, [:topic])
+    |> validate_required([:topic])
   end
 
 end
