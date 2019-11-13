@@ -18,16 +18,15 @@ defmodule MiningbeeWeb.GatewayControllerTest do
     test "GET /gateways/:id", %{conn: conn} do
 
       gateway = insert(:gateway)
-      IO.inspect gateway
 
       conn = get(conn, Routes.gateway_path(conn, :show, gateway.apiary_id))
       assert json_response(conn, 200)["data"] != []
     end
   end
 
-  describe "Create Gateway" do 
-    test "POST /gateways", %{conn: conn} do 
-      
+  describe "Create Gateway" do
+    test "POST /gateways", %{conn: conn} do
+
       struct = %{"gateway" => %{"topic" => "topic123"}}
       conn = conn
         |> post(Routes.gateway_path(conn, :create), struct)
@@ -35,9 +34,9 @@ defmodule MiningbeeWeb.GatewayControllerTest do
     end
   end
 
-  describe "Update Gateway" do 
-    test "PATCH /gateways/:id", %{conn: conn} do 
-      
+  describe "Update Gateway" do
+    test "PATCH /gateways/:id", %{conn: conn} do
+
       gateway = insert(:gateway)
       struct = %{"gateway" => %{"topic" => "new topic123"}}
       conn = conn
@@ -46,9 +45,9 @@ defmodule MiningbeeWeb.GatewayControllerTest do
     end
   end
 
-  describe "Delete Gateway" do 
-    test "DELETE /gateways/:id", %{conn: conn} do 
-      
+  describe "Delete Gateway" do
+    test "DELETE /gateways/:id", %{conn: conn} do
+
       gateway = insert(:gateway)
       conn = conn
         |> delete(Routes.gateway_path(conn, :delete, gateway.apiary_id))

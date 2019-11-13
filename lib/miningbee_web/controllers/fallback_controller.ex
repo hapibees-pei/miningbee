@@ -13,8 +13,8 @@ defmodule MiningbeeWeb.FallbackController do
     |> render("error.json", changeset: changeset)
   end
 
-  def call(conn, {:error, :unauthorized}) do 
-    conn 
+  def call(conn, {:error, :unauthorized}) do
+    conn
     |> put_status(:unauthorized)
     |> put_view(MiningbeeWeb.ErrorView)
     |> render(:"401")

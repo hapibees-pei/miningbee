@@ -29,5 +29,5 @@ defmodule MiningbeeWeb.ErrorView do
   def render("400.json", _assigns) do
     %{errors: [%{detail: "Bad Request", status: 400}]}
   end
-  
+
 end

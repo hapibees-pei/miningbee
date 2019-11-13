@@ -10,7 +10,7 @@ defmodule Miningbee.Models do
   def list_gateways do
     Repo.all(Gateway)
   end
-  
+
   def get_gateway!(id), do: Repo.get!(Gateway, id)
 
   def create_gateway(attrs \\ %{}) do

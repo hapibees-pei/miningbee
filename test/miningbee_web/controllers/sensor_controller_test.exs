@@ -24,9 +24,9 @@ defmodule MiningbeeWeb.SensorControllerTest do
     end
   end
 
-  describe "Create Sensor" do 
-    test "POST /sensors", %{conn: conn} do 
-      
+  describe "Create Sensor" do
+    test "POST /sensors", %{conn: conn} do
+
       gateway = insert(:gateway)
       struct = %{"sensor" => %{"topic" => "topic123", "apiary_id" => gateway.apiary_id}}
       conn = conn
@@ -35,9 +35,9 @@ defmodule MiningbeeWeb.SensorControllerTest do
     end
   end
 
-  describe "Update Sensor" do 
-    test "PATCH /sensors/:id", %{conn: conn} do 
-      
+  describe "Update Sensor" do
+    test "PATCH /sensors/:id", %{conn: conn} do
+
       sensor = insert(:sensor)
       struct = %{"sensor" => %{"topic" => "new topic123"}}
       conn = conn
@@ -46,9 +46,9 @@ defmodule MiningbeeWeb.SensorControllerTest do
     end
   end
 
-  describe "Delete Sensor" do 
-    test "DELETE /sensors/:id", %{conn: conn} do 
-      
+  describe "Delete Sensor" do
+    test "DELETE /sensors/:id", %{conn: conn} do
+
       sensor = insert(:sensor)
       conn = conn
         |> delete(Routes.sensor_path(conn, :delete, sensor.hive_id))
