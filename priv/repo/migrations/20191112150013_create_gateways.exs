@@ -2,7 +2,7 @@ defmodule Miningbee.Repo.Migrations.CreateGateways do
   use Ecto.Migration
 
   def change do
-    create table(:gateways) do
+    create table(:gateways, primary_key: false) do
       add :apiary_id, :uuid, primary_key: true
       add :topic, :string
 

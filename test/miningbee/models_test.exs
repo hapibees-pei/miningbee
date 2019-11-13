@@ -48,4 +48,53 @@ defmodule Miningbee.ModelsTest do
     end
 
   end
+
+  describe "sensors" do
+    alias Miningbee.Models.Sensor
+
+    @update_attrs %{topic: "some updated topic"}
+    @invalid_attrs %{topic: nil}
+
+    test "list_sensors/0 returns all sensors" do
+      sensor = insert(:sensor)
+      assert Models.list_sensors() == [sensor]
+    end
+
+    test "get_sensor!/1 returns the sensor with given id" do
+      sensor = insert(:sensor)
+      assert Models.get_sensor!(sensor.hive_id) == sensor
+    end
+
+    test "create_sensor/1 with valid data creates a sensor" do
+      gateway = insert(:gateway)
+      struct = %{apiary_id: gateway.apiary_id, topic: "some topic"}
+
+      assert {:ok, %Sensor{} = sensor} = Models.create_sensor(struct)
+      assert sensor.apiary_id == gateway.apiary_id
+      assert sensor.topic == "some topic"
+    end
+
+    test "create_sensor/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Models.create_sensor(@invalid_attrs)
+    end
+
+    test "update_sensor/2 with valid data updates the sensor" do
+      sensor = insert(:sensor)
+      assert {:ok, %Sensor{} = sensor} = Models.update_sensor(sensor, @update_attrs)
+      assert sensor.topic == "some updated topic"
+    end
+
+    test "update_sensor/2 with invalid data returns error changeset" do
+      sensor = insert(:sensor)
+      assert {:error, %Ecto.Changeset{}} = Models.update_sensor(sensor, @invalid_attrs)
+      assert sensor == Models.get_sensor!(sensor.hive_id)
+    end
+
+    test "delete_sensor/1 deletes the sensor" do
+      sensor = insert(:sensor)
+      assert {:ok, %Sensor{}} = Models.delete_sensor(sensor)
+      assert_raise Ecto.NoResultsError, fn -> Models.get_sensor!(sensor.hive_id) end
+    end
+
+  end
 end

@@ -18,6 +18,7 @@ defmodule MiningbeeWeb.GatewayControllerTest do
     test "GET /gateways/:id", %{conn: conn} do
 
       gateway = insert(:gateway)
+      IO.inspect gateway
 
       conn = get(conn, Routes.gateway_path(conn, :show, gateway.apiary_id))
       assert json_response(conn, 200)["data"] != []

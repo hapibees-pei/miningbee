@@ -4,6 +4,7 @@ defmodule Miningbee.Models do
   alias Miningbee.Repo
 
   alias Miningbee.Models.Gateway
+  alias Miningbee.Models.Sensor
 
   ## GATEWAYS
   def list_gateways do
@@ -29,5 +30,26 @@ defmodule Miningbee.Models do
   end
 
   ## SENSORS
+  def list_sensors do
+    Repo.all(Sensor)
+  end
+
+  def get_sensor!(id), do: Repo.get!(Sensor, id)
+
+  def create_sensor(attrs \\ %{}) do
+    %Sensor{}
+    |> Sensor.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_sensor(%Sensor{} = sensor, attrs) do
+    sensor
+    |> Sensor.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_sensor(%Sensor{} = sensor) do
+    Repo.delete(sensor)
+  end
 
 end
