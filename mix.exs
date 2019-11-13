@@ -29,7 +29,6 @@ defmodule Miningbee.MixProject do
     [
       "lib", 
       "test/support", 
-      "test/startegies",
       "test/factories"
     ]
   end
