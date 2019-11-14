@@ -1,8 +1,8 @@
-defmodule Miningbee.Models.Sensor do
+defmodule Miningbee.Apiaries.Sensor do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias Miningbee.Models.Gateway
+  alias Miningbee.Apiaries.Gateway
 
   @primary_key {:hive_id, :binary_id, autogenerate: true}
   @derive {Phoenix.Param, key: :hive_id}

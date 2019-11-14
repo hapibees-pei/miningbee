@@ -1,10 +1,10 @@
-defmodule Miningbee.Models do
+defmodule Miningbee.Apiaries do
 
   import Ecto.Query, warn: false
   alias Miningbee.Repo
 
-  alias Miningbee.Models.Gateway
-  alias Miningbee.Models.Sensor
+  alias Miningbee.Apiaries.Gateway
+  alias Miningbee.Apiaries.Sensor
 
   ## GATEWAYS
   def list_gateways do

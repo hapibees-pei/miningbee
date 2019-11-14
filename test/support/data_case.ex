@@ -22,7 +22,6 @@ defmodule Miningbee.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Miningbee.DataCase
-
       import Miningbee.Factory
     end
   end

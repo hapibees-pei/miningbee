@@ -1,6 +1,8 @@
 defmodule Miningbee.MixProject do
   use Mix.Project
 
+  @env Mix.env()
+
   def project do
     [
       app: :miningbee,
@@ -32,6 +34,7 @@ defmodule Miningbee.MixProject do
       "test/factories"
     ]
   end
+
   defp elixirc_paths(_), do: ["lib"]
 
   # Specifies your project dependencies.
@@ -47,7 +50,7 @@ defmodule Miningbee.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"}
-      | deps(Mix.env())
+      | deps(@env)
     ]
   end
 
