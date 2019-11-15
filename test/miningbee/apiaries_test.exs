@@ -1,4 +1,4 @@
-defmodule Miningbee.ModelsTest do
+defmodule Miningbee.ApiariesTest do
   use Miningbee.DataCase
 
   alias Miningbee.Apiaries
