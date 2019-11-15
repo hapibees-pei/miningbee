@@ -11,9 +11,10 @@ defmodule Miningbee.Application do
       # Start the Ecto repository
       Miningbee.Repo,
       # Start the endpoint when the application starts
-      MiningbeeWeb.Endpoint
+      MiningbeeWeb.Endpoint,
       # Starts a worker by calling: Miningbee.Worker.start_link(arg)
       # {Miningbee.Worker, arg},
+      Miningbee.Mqtt.Connection
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

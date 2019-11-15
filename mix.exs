@@ -27,10 +27,10 @@ defmodule Miningbee.MixProject do
   end
 
   # Specifies which paths to compile per environment.
-  defp elixirc_paths(:test) do 
+  defp elixirc_paths(:test) do
     [
-      "lib", 
-      "test/support", 
+      "lib",
+      "test/support",
       "test/factories"
     ]
   end
@@ -49,7 +49,8 @@ defmodule Miningbee.MixProject do
       {:postgrex, ">= 0.0.0"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
-      {:plug_cowboy, "~> 2.0"}
+      {:plug_cowboy, "~> 2.0"},
+      {:tortoise, "~> 0.9"}
       | deps(@env)
     ]
   end

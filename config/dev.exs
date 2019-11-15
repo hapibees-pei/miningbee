@@ -4,6 +4,8 @@ use Mix.Config
 config :miningbee, Miningbee.Repo,
   database: "miningbee_dev",
   hostname: "localhost",
+  username: "postgres",
+  password: "postgres",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
