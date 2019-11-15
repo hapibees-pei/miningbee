@@ -25,28 +25,28 @@ defmodule MiningbeeWeb.StatisticsController do
   defp light_stat(conn, params) do
     with {:ok, stats} <- Statistics.light_stat(params) do
       conn
-      |> render("statistics.json", statistic: stats)
+      |> render("show.json", statistic: stats)
     end
   end
 
   defp pressure_stat(conn, params) do
     with {:ok, stats} <- Statistics.pressure_stat(params) do
       conn
-      |> render("statistics.json", statistic: stats)
+      |> render("show.json", statistic: stats)
     end
   end
 
   defp sound_stat(conn, params) do
     with {:ok, stats} <- Statistics.sound_stat(params) do
       conn
-      |> render("statistics.json", statistic: stats)
+      |> render("show.json", statistic: stats)
     end
   end
 
   defp temperature_stat(conn, params) do
     with {:ok, stats} <- Statistics.temperature_stat(params) do
       conn
-      |> render("statistics.json", statistic: stats)
+      |> render("show.json", statistic: stats)
     end
   end
 
