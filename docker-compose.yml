@@ -1,0 +1,31 @@
+# Version of docker-compose
+version: '3'
+
+# Containers we are going to run
+services:
+  db:
+    # We use the predefined Postgres image
+    image: postgres:9.6
+    environment:
+      # Set user/password for Postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      # Set a path where Postgres should store the data
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+  mosquitto:
+      image: eclipse-mosquitto
+      hostname: mosquitto
+      container_name: mosquitto
+      expose:
+        - "1883"
+        - "9001"
+      ports:
+        - "1883:1883"
+        - "9001:9001"

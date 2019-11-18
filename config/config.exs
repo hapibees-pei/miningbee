@@ -27,4 +27,14 @@ config :phoenix, :json_library, Jason
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
+
+config :miningbee, Miningbee.Mqtt.Connection,
+  client_id: "mining",
+  host: "127.0.0.1",
+  port: 1883,
+  user_name: "guest",
+  password: "guest",
+  keep_alive: 600,
+  subscriptions: "#"
+
 import_config "#{Mix.env()}.exs"
