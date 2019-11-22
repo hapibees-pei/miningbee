@@ -1,10 +1,8 @@
 defmodule Miningbee.Apiaries do
-
   import Ecto.Query, warn: false
   alias Miningbee.Repo
 
-  alias Miningbee.Apiaries.Gateway
-  alias Miningbee.Apiaries.Sensor
+  alias Miningbee.Apiaries.{Gateway, Reading, Sensor}
 
   ## GATEWAYS
   def list_gateways do
@@ -52,4 +50,21 @@ defmodule Miningbee.Apiaries do
     Repo.delete(sensor)
   end
 
+  def list_readings do
+    Repo.all(Reading)
+  end
+
+  def get_reading!(id), do: Repo.get!(Reading, id)
+
+  # get individual reading params
+
+  def create_reading(attrs \\ %{}) do
+    %Reading{}
+    |> Reading.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def delete_reading(%Reading{} = reading) do
+    Repo.delete(reading)
+  end
 end

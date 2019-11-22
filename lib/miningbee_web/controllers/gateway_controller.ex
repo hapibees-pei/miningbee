@@ -27,7 +27,8 @@ defmodule MiningbeeWeb.GatewayController do
   def update(conn, %{"id" => id, "gateway" => gateway_params}) do
     gateway = Apiaries.get_gateway!(id)
 
-    with {:ok, %Gateway{} = gateway} <- Apiaries.update_gateway(gateway, gateway_params) do
+    with {:ok, %Gateway{} = gateway} <-
+           Apiaries.update_gateway(gateway, gateway_params) do
       render(conn, "show.json", gateway: gateway)
     end
   end

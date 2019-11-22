@@ -9,7 +9,11 @@ defmodule Miningbee.Apiaries.Gateway do
   schema "gateways" do
     field :topic, :string
 
-    has_many :sensors, Sensor, foreign_key: :hive_id, references: :apiary_id, on_replace: :delete, on_delete: :delete_all
+    has_many :sensors, Sensor,
+      foreign_key: :hive_id,
+      references: :apiary_id,
+      on_replace: :delete,
+      on_delete: :delete_all
 
     timestamps()
   end
@@ -26,5 +30,4 @@ defmodule Miningbee.Apiaries.Gateway do
     |> cast(attrs, [:topic])
     |> validate_required([:topic])
   end
-
 end

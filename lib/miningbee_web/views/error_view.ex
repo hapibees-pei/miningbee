@@ -11,7 +11,11 @@ defmodule MiningbeeWeb.ErrorView do
   # the template name. For example, "404.json" becomes
   # "Not Found".
   def template_not_found(template, _assigns) do
-    %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
+    %{
+      errors: %{
+        detail: Phoenix.Controller.status_message_from_template(template)
+      }
+    }
   end
 
   def render("404.json", _assigns) do
@@ -29,5 +33,4 @@ defmodule MiningbeeWeb.ErrorView do
   def render("400.json", _assigns) do
     %{errors: [%{detail: "Bad Request", status: 400}]}
   end
-
 end

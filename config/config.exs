@@ -13,7 +13,8 @@ config :miningbee,
 # Configures the endpoint
 config :miningbee, MiningbeeWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "cqt+Dbz43Limn0I0sWmIovbz6aGXepZmOKDz9x0w+1XIvEuo0XfxSziPKjIF5FLC",
+  secret_key_base:
+    "cqt+Dbz43Limn0I0sWmIovbz6aGXepZmOKDz9x0w+1XIvEuo0XfxSziPKjIF5FLC",
   render_errors: [view: MiningbeeWeb.ErrorView, accepts: ~w(json)],
   pubsub: [name: Miningbee.PubSub, adapter: Phoenix.PubSub.PG2]
 

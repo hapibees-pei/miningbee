@@ -8,8 +8,8 @@ defmodule MiningbeeWeb.StatisticsView do
 
   def render("statistics.json", %{statistic: statistic}) do
     %{
-      #timestamp: statistic.timestamp, 
-      #reading: statistic.reading
+      # timestamp: statistic.timestamp,
+      # reading: statistic.reading
     }
   end
 end

@@ -1,6 +1,6 @@
 defmodule MiningbeeWeb.StatisticsController do
   use MiningbeeWeb, :controller
-  
+
   alias Miningbee.Statistics
 
   action_fallback MiningbeeWeb.FallbackController
@@ -10,12 +10,16 @@ defmodule MiningbeeWeb.StatisticsController do
       case query do
         "light" ->
           light_stat(conn, params)
+
         "pressure" ->
           pressure_stat(conn, params)
+
         "sound" ->
           sound_stat(conn, params)
+
         "temperature" ->
           temperature_stat(conn, params)
+
         _ ->
           {:error, :bad_request}
       end
@@ -49,5 +53,4 @@ defmodule MiningbeeWeb.StatisticsController do
       |> render("show.json", statistic: stats)
     end
   end
-
 end

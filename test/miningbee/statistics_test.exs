@@ -4,8 +4,6 @@ defmodule Miningbee.StatisticsTest do
   alias Miningbee.Statistics
 
   describe "statistics" do
-
-    #test individuall statistc results
-
+    # test individuall statistc results
   end
 end

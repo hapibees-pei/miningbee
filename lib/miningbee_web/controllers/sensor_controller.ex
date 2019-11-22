@@ -27,7 +27,8 @@ defmodule MiningbeeWeb.SensorController do
   def update(conn, %{"id" => id, "sensor" => sensor_params}) do
     sensor = Apiaries.get_sensor!(id)
 
-    with {:ok, %Sensor{} = sensor} <- Apiaries.update_sensor(sensor, sensor_params) do
+    with {:ok, %Sensor{} = sensor} <-
+           Apiaries.update_sensor(sensor, sensor_params) do
       render(conn, "show.json", sensor: sensor)
     end
   end

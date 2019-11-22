@@ -14,7 +14,7 @@ defmodule MiningbeeWeb.SensorView do
     %{
       hive_id: sensor.hive_id,
       topic: sensor.topic,
-      apiary_id: sensor.apiary_id,
+      apiary_id: sensor.apiary_id
     }
   end
 end

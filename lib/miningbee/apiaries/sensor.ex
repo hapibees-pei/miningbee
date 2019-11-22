@@ -9,7 +9,10 @@ defmodule Miningbee.Apiaries.Sensor do
   schema "sensors" do
     field :topic, :string
 
-    belongs_to :gateway, Gateway, foreign_key: :apiary_id, references: :apiary_id, type: :binary_id
+    belongs_to :gateway, Gateway,
+      foreign_key: :apiary_id,
+      references: :apiary_id,
+      type: :binary_id
 
     timestamps()
   end
