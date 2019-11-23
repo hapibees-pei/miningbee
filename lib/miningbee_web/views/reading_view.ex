@@ -2,12 +2,8 @@ defmodule MiningbeeWeb.ReadingView do
   use MiningbeeWeb, :view
   alias MiningbeeWeb.ReadingView
 
-  def render("index.json", %{readings: readings}) do
-    %{data: render_many(readings, ReadingView, "reading.json")}
-  end
-
   def render("show.json", %{reading: reading}) do
-    %{data: render_one(reading, ReadingView, "reading.json")}
+    %{data: render_many(reading, ReadingView, "reading.json")}
   end
 
   def render("reading.json", %{reading: reading}) do

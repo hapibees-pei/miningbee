@@ -17,8 +17,8 @@ defmodule MiningbeeWeb.Router do
       resources "/sensors", SensorController,
         only: [:show, :index, :create, :update, :delete]
 
-      # Statistics
-      get "/statistics", StatisticsController, :show
+      # Readinsg Statistics
+      get "/readings", ReadingsController, :show
     end
   end
 end
