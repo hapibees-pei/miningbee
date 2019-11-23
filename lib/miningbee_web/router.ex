@@ -18,7 +18,7 @@ defmodule MiningbeeWeb.Router do
         only: [:show, :index, :create, :update, :delete]
 
       # Readinsg Statistics
-      get "/readings", ReadingsController, :show
+      get "/readings", ReadingController, :show
     end
   end
 end

@@ -33,4 +33,20 @@ defmodule Miningbee.Statistics do
     # return query result
     {:ok, []}
   end
+
+  def humidity_stat(params) do
+    # params must contain hive_id
+    # maybe retrieve params info, such as min_date and max_date to explore data
+    # or group by different time measures
+    # return query result
+    {:ok, []}
+  end
+
+  def accelerometer_stat(params) do
+    # params must contain hive_id
+    # maybe retrieve params info, such as min_date and max_date to explore data
+    # or group by different time measures
+    # return query result
+    {:ok, []}
+  end
 end

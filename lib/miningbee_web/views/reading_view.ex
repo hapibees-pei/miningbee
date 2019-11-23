@@ -6,6 +6,7 @@ defmodule MiningbeeWeb.ReadingView do
     %{data: render_many(reading, ReadingView, "reading.json")}
   end
 
+  # Later substitute by indivual reading Type View
   def render("reading.json", %{reading: reading}) do
     %{
       id: reading.id,
