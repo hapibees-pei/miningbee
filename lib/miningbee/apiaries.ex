@@ -56,7 +56,7 @@ defmodule Miningbee.Apiaries do
 
   def get_reading!(id), do: Repo.get!(Reading, id)
 
-  # get individual reading params
+  # use Statistics to get individual reading params
 
   def create_reading(attrs \\ %{}) do
     %Reading{}

@@ -3,6 +3,7 @@ defmodule Miningbee.Statistics do
   alias Miningbee.Repo
 
   def light_stat(params) do
+    # params must contain hive_id
     # maybe retrieve params info, such as min_date and max_date to explore data
     # or group by different time measures
     # return query result
@@ -10,6 +11,7 @@ defmodule Miningbee.Statistics do
   end
 
   def pressure_stat(params) do
+    # params must contain hive_id
     # maybe retrieve params info, such as min_date and max_date to explore data
     # or group by different time measures
     # return query result
@@ -17,6 +19,7 @@ defmodule Miningbee.Statistics do
   end
 
   def sound_stat(params) do
+    # params must contain hive_id
     # maybe retrieve params info, such as min_date and max_date to explore data
     # or group by different time measures
     # return query result
@@ -24,6 +27,7 @@ defmodule Miningbee.Statistics do
   end
 
   def temperature_stat(params) do
+    # params must contain hive_id
     # maybe retrieve params info, such as min_date and max_date to explore data
     # or group by different time measures
     # return query result
