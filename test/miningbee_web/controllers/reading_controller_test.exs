@@ -39,8 +39,7 @@ defmodule MiningbeeWeb.ReadingControllerTest do
     test "GET /readings?query=temperature", %{conn: conn} do
       # insert readings
 
-      conn =
-        get(conn, Routes.reading_path(conn, :show, query: "temperature"))
+      conn = get(conn, Routes.reading_path(conn, :show, query: "temperature"))
 
       # at least for now
       assert json_response(conn, 200)["data"] == []
@@ -51,8 +50,7 @@ defmodule MiningbeeWeb.ReadingControllerTest do
     test "GET /readings?query=humidity", %{conn: conn} do
       # insert readings
 
-      conn =
-        get(conn, Routes.reading_path(conn, :show, query: "humidity"))
+      conn = get(conn, Routes.reading_path(conn, :show, query: "humidity"))
 
       # at least for now
       assert json_response(conn, 200)["data"] == []
@@ -63,8 +61,7 @@ defmodule MiningbeeWeb.ReadingControllerTest do
     test "GET /readings?query=accelerometer", %{conn: conn} do
       # insert readings
 
-      conn =
-        get(conn, Routes.reading_path(conn, :show, query: "accelerometer"))
+      conn = get(conn, Routes.reading_path(conn, :show, query: "accelerometer"))
 
       # at least for now
       assert json_response(conn, 200)["data"] == []

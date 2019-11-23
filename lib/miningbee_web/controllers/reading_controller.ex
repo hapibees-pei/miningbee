@@ -73,5 +73,4 @@ defmodule MiningbeeWeb.ReadingController do
       |> render("show.json", reading: readings)
     end
   end
-
 end
