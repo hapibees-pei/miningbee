@@ -14,7 +14,8 @@ defmodule Miningbee.Application do
       MiningbeeWeb.Endpoint,
       # Starts a worker by calling: Miningbee.Worker.start_link(arg)
       # {Miningbee.Worker, arg},
-      Miningbee.Mqtt.Connection
+      Miningbee.Mqtt.Connection,
+      Miningbee.Redis.Pool
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

@@ -38,4 +38,9 @@ config :miningbee, Miningbee.Mqtt.Connection,
   keep_alive: 600,
   subscriptions: "#"
 
+config :miningbee, Miningbee.Redis.Pool,
+  host: "127.0.0.1",
+  port: 6380,
+  pool_size: 5
+
 import_config "#{Mix.env()}.exs"

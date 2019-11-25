@@ -20,12 +20,20 @@ services:
     ports:
       - "5432:5432"
   mosquitto:
-      image: eclipse-mosquitto
-      hostname: mosquitto
-      container_name: mosquitto
-      expose:
-        - "1883"
-        - "9001"
-      ports:
-        - "1883:1883"
-        - "9001:9001"
+    image: eclipse-mosquitto
+    hostname: mosquitto
+    container_name: mosquitto
+    expose:
+      - "1883"
+      - "9001"
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+  redis:
+    image: redis
+    hostname: redis
+    container_name: redis
+    expose:
+      - 6380
+    ports:
+      - "6380:6379"

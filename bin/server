@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+docker-compose up -d 
+pp_info "server" "Starting development server..."
+iex -S mix phx.server
