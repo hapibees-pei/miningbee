@@ -34,3 +34,5 @@ miningbee-*.tar
 .DS_Store
 .AppleDouble
 .LSOverride
+
+pgdata

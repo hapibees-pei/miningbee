@@ -1,0 +1,65 @@
+#!/usr/bin/env sh
+
+set -e
+. "./bin/functions"
+
+env=${1:-"dev"}
+
+
+pp_info "setup" "Installing required languages..."
+
+if not_installed "asdf"; then
+  pp_error "setup" "
+  We are using asdf (https://github.com/asdf-vm/asdf) to manage tool
+  dependencies, since it was not found on your system we cannot ensure that you
+  are using the correct versions of all the tools. Please install it and run
+  this script again, or proceed at your own peril.
+  "
+
+  ensure_confirmation
+else
+  set +e
+  asdf plugin-add erlang https://github.com/asdf-vm/asdf-erlang.git 2>/dev/null
+  asdf plugin-add elixir https://github.com/asdf-vm/asdf-elixir.git 2>/dev/null
+  set -e
+
+  asdf install
+fi
+
+
+if not_installed "docker"; then
+  pp_error "setup" "
+  We are using docker for our mqtt broker, database and pubsub. pls insall it and run this script again.
+  "
+
+  exit 1
+else
+  docker_state=$(docker info >/dev/null 2>&1)
+  if [[ $? -ne 0 ]]; then
+    echo "Docker does not seem to be running, run it first and retry"
+    exit 1
+  fi
+
+fi
+
+
+if not_installed "docker-compose"; then
+  pp_error "setup" "
+  We are using docker compose pls install it
+  "
+  exit 1
+else
+  docker-compose up -d
+fi
+
+echo ""
+pp_info "setup" "Installing elixir dependencies..."
+MIX_ENV=$env mix local.hex --force
+MIX_ENV=$env mix local.rebar --force
+MIX_ENV=$env mix deps.get
+mix archive.install hex phx_new 1.4.10 --force
+mix ecto.create
+mix ecto.setup
+echo ""
+
+pp_success "setup" "You're good to go! Run bin/server to get the development server running."
