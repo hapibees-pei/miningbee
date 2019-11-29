@@ -14,8 +14,8 @@ defmodule MiningbeeWeb.ReadingController do
         "pressure" ->
           pressure_stat(conn, params)
 
-        "sound" ->
-          sound_stat(conn, params)
+        "noise" ->
+          noise_stat(conn, params)
 
         "temperature" ->
           temperature_stat(conn, params)
@@ -46,8 +46,8 @@ defmodule MiningbeeWeb.ReadingController do
     end
   end
 
-  defp sound_stat(conn, params) do
-    with {:ok, readings} <- Statistics.sound_stat(params) do
+  defp noise_stat(conn, params) do
+    with {:ok, readings} <- Statistics.noise_stat(params) do
       conn
       |> render("show.json", reading: readings)
     end

@@ -51,7 +51,8 @@ defmodule Miningbee.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:redix, ">= 0.0.0"},
-      {:tortoise, "~> 0.9"}
+      {:tortoise, "~> 0.9"},
+      {:timex, "~> 3.1"}
       | deps(@env)
     ]
   end

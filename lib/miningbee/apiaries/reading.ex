@@ -9,6 +9,7 @@ defmodule Miningbee.Apiaries.Reading do
     field :noise, :float
     field :pressure, :float
     field :temperature, :float
+    field :date, :utc_datetime
 
     belongs_to :sensor, Sensor,
       foreign_key: :hive_id,
@@ -27,7 +28,8 @@ defmodule Miningbee.Apiaries.Reading do
       :light,
       :noise,
       :humidity,
-      :accelerometer
+      :accelerometer,
+      :date
     ])
     |> validate_required([
       :hive_id,
@@ -36,7 +38,8 @@ defmodule Miningbee.Apiaries.Reading do
       :light,
       :noise,
       :humidity,
-      :accelerometer
+      :accelerometer,
+      :date
     ])
   end
 end

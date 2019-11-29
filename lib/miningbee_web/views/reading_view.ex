@@ -15,7 +15,8 @@ defmodule MiningbeeWeb.ReadingView do
       light: reading.light,
       noise: reading.noise,
       humidity: reading.humidity,
-      accelerometer: reading.accelerometer
+      accelerometer: reading.accelerometer,
+      date: reading.date
     }
   end
 end

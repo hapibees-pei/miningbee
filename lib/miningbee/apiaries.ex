@@ -67,4 +67,53 @@ defmodule Miningbee.Apiaries do
   def delete_reading(%Reading{} = reading) do
     Repo.delete(reading)
   end
+
+  def stats_date_filter(%{"date" => date} = params) do
+    # type used by JS (check if same as rails)
+    with {:ok, parsed_date} <- Timex.parse!(date, "{RFC3339z}") do
+      parsed_date
+    end
+  end
+
+  def stats_date_filter(params) do
+    Timex.now()
+  end
+
+  def stats_time_frame(date, "minute") do 
+    Timex.shift(date, [hours: -1])
+  end
+
+  def stats_time_frame(date, "hour") do 
+    Timex.shift(date, [days: -1])
+  end
+
+  def stats_time_frame(date, "day") do 
+    Timex.shift(date, [weeks: -1])
+  end
+
+  def stats_group_filter(%{"group" => group} = params) do
+      group
+  end
+
+  def stats_group_filter(params) do
+      "hour"
+    end
+
+  def hive_id_filter(params) do
+    if Map.has_key?(params, "hive_id") do
+      Map.fetch(params, "hive_id")
+    else
+      {:error, :bad_request}
+    end
+  end
+
+  def valid_stat_query?(query) do
+    valid_querys = [
+      "minute",
+      "hour",
+      "day"
+    ]
+    Enum.member?(valid_querys, query)
+  end
+
 end
