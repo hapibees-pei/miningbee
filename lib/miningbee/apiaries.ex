@@ -79,25 +79,25 @@ defmodule Miningbee.Apiaries do
     Timex.now()
   end
 
-  def stats_time_frame(date, "minute") do 
-    Timex.shift(date, [hours: -1])
+  def stats_time_frame(date, "minute") do
+    Timex.shift(date, hours: -1)
   end
 
-  def stats_time_frame(date, "hour") do 
-    Timex.shift(date, [days: -1])
+  def stats_time_frame(date, "hour") do
+    Timex.shift(date, days: -1)
   end
 
-  def stats_time_frame(date, "day") do 
-    Timex.shift(date, [weeks: -1])
+  def stats_time_frame(date, "day") do
+    Timex.shift(date, weeks: -1)
   end
 
   def stats_group_filter(%{"group" => group} = params) do
-      group
+    group
   end
 
   def stats_group_filter(params) do
-      "hour"
-    end
+    "hour"
+  end
 
   def hive_id_filter(params) do
     if Map.has_key?(params, "hive_id") do
@@ -107,13 +107,62 @@ defmodule Miningbee.Apiaries do
     end
   end
 
+  def stats_data_padding(min_date, max_date, "minute") do
+    Timex.Interval.new(from: min_date, until: max_date, right_open: false)
+    |> Timex.Interval.with_step(minutes: 1)
+    |> Enum.map(fn x ->
+      {x, 0}
+    end)
+  end
+
+  def stats_data_padding(min_date, max_date, "hour") do
+    Timex.Interval.new(from: min_date, until: max_date, right_open: false)
+    |> Timex.Interval.with_step(hours: 1)
+    |> Enum.map(fn x ->
+      {x, 0}
+    end)
+  end
+
+  def stats_data_padding(min_date, max_date, "day") do
+    Timex.Interval.new(from: min_date, until: max_date, right_open: false)
+    |> Timex.Interval.with_step(days: 1)
+    |> Enum.map(fn x ->
+      {x, 0}
+    end)
+  end
+
+  def merge_empty_data(interval, data, field) do
+    (data ++ interval)
+    |> Enum.group_by(fn tuple -> get_field(tuple, field) end)
+    |> Enum.map(fn {k, v} -> averagee(v) end)
+    |> Enum.uniq_by(fn tuple -> get_field(tuple, field) end)
+    |> Enum.sort_by(fn {date, avg} -> {date, avg} end)
+  end
+
+  def get_field({date, _}, "minute") do
+    date.minute
+  end
+
+  def get_field({date, _}, "hour") do
+    date.hour
+  end
+
+  def get_field({date, _}, "day") do
+    date.day
+  end
+
+  def averagee(v),
+    do:
+      {elem(hd(v), 0),
+       Enum.reduce(v, 0, fn {date, value}, acc -> value + acc end) / length(v)}
+
   def valid_stat_query?(query) do
     valid_querys = [
       "minute",
       "hour",
       "day"
     ]
+
     Enum.member?(valid_querys, query)
   end
-
 end

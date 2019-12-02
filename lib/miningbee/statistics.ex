@@ -10,56 +10,22 @@ defmodule Miningbee.Statistics do
     group = Apiaries.stats_group_filter(params)
     time_frame = Apiaries.stats_time_frame(date, group)
 
+    interval = Apiaries.stats_data_padding(time_frame, date, group)
+
     with {:ok, hive_id} <- Apiaries.hive_id_filter(params) do
-      case group do
-        "minute" -> {:ok, light_minute(date, time_frame, hive_id)}
-        "hour" -> {:ok, light_hour(date, time_frame, hive_id)}
-        "day" -> {:ok, light_day(date, time_frame, hive_id)}
-      end
+      data = light_query(time_frame, date, hive_id)
+
+      Apiaries.merge_empty_data(interval, data, group)
     end
   end
 
-  defp light_minute(min_date, max_date, hive_id) do
+  defp light_query(min_date, max_date, hive_id) do
     query =
       from reading in Reading,
-        group_by: fragment("date_part('minute', ?)", reading.date),
         where: reading.date >= ^min_date,
         where: reading.date <= ^max_date,
         where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('minute', ?)", reading.date),
-          avg(reading.light)}
-
-    Repo.all(query)
-  end
-
-  defp light_hour(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('hour', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('hour', ?)", reading.date),
-          avg(reading.light)}
-
-    Repo.all(query)
-  end
-
-  defp light_day(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('day', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('day', ?)", reading.date),
-          avg(reading.light)}
+        select: {reading.date, reading.light}
 
     Repo.all(query)
   end
@@ -70,56 +36,22 @@ defmodule Miningbee.Statistics do
     group = Apiaries.stats_group_filter(params)
     time_frame = Apiaries.stats_time_frame(date, group)
 
+    interval = Apiaries.stats_data_padding(time_frame, date, group)
+
     with {:ok, hive_id} <- Apiaries.hive_id_filter(params) do
-      case group do
-        "minute" -> {:ok, pressure_minute(date, time_frame, hive_id)}
-        "hour" -> {:ok, pressure_hour(date, time_frame, hive_id)}
-        "day" -> {:ok, pressure_day(date, time_frame, hive_id)}
-      end
+      data = pressure_query(time_frame, date, hive_id)
+
+      Apiaries.merge_empty_data(interval, data, group)
     end
   end
 
-  defp pressure_minute(min_date, max_date, hive_id) do
+  defp pressure_query(min_date, max_date, hive_id) do
     query =
       from reading in Reading,
-        group_by: fragment("date_part('minute', ?)", reading.date),
         where: reading.date >= ^min_date,
         where: reading.date <= ^max_date,
         where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('minute', ?)", reading.date),
-          avg(reading.pressure)}
-
-    Repo.all(query)
-  end
-
-  defp pressure_hour(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('hour', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('hour', ?)", reading.date),
-          avg(reading.pressure)}
-
-    Repo.all(query)
-  end
-
-  defp pressure_day(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('day', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('day', ?)", reading.date),
-          avg(reading.pressure)}
+        select: {reading.date, reading.pressure}
 
     Repo.all(query)
   end
@@ -130,56 +62,22 @@ defmodule Miningbee.Statistics do
     group = Apiaries.stats_group_filter(params)
     time_frame = Apiaries.stats_time_frame(date, group)
 
+    interval = Apiaries.stats_data_padding(time_frame, date, group)
+
     with {:ok, hive_id} <- Apiaries.hive_id_filter(params) do
-      case group do
-        "minute" -> {:ok, noise_minute(date, time_frame, hive_id)}
-        "hour" -> {:ok, noise_hour(date, time_frame, hive_id)}
-        "day" -> {:ok, noise_day(date, time_frame, hive_id)}
-      end
+      data = noise_query(time_frame, date, hive_id)
+
+      Apiaries.merge_empty_data(interval, data, group)
     end
   end
 
-  defp noise_minute(min_date, max_date, hive_id) do
+  defp noise_query(min_date, max_date, hive_id) do
     query =
       from reading in Reading,
-        group_by: fragment("date_part('minute', ?)", reading.date),
         where: reading.date >= ^min_date,
         where: reading.date <= ^max_date,
         where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('minute', ?)", reading.date),
-          avg(reading.noise)}
-
-    Repo.all(query)
-  end
-
-  defp noise_hour(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('hour', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('hour', ?)", reading.date),
-          avg(reading.noise)}
-
-    Repo.all(query)
-  end
-
-  defp noise_day(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('day', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('day', ?)", reading.date),
-          avg(reading.noise)}
+        select: {reading.date, reading.noise}
 
     Repo.all(query)
   end
@@ -190,56 +88,22 @@ defmodule Miningbee.Statistics do
     group = Apiaries.stats_group_filter(params)
     time_frame = Apiaries.stats_time_frame(date, group)
 
+    interval = Apiaries.stats_data_padding(time_frame, date, group)
+
     with {:ok, hive_id} <- Apiaries.hive_id_filter(params) do
-      case group do
-        "minute" -> {:ok, temperature_minute(date, time_frame, hive_id)}
-        "hour" -> {:ok, temperature_hour(date, time_frame, hive_id)}
-        "day" -> {:ok, temperature_day(date, time_frame, hive_id)}
-      end
+      data = temperature_query(time_frame, date, hive_id)
+
+      Apiaries.merge_empty_data(interval, data, group)
     end
   end
 
-  defp temperature_minute(min_date, max_date, hive_id) do
+  defp temperature_query(min_date, max_date, hive_id) do
     query =
       from reading in Reading,
-        group_by: fragment("date_part('minute', ?)", reading.date),
         where: reading.date >= ^min_date,
         where: reading.date <= ^max_date,
         where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('minute', ?)", reading.date),
-          avg(reading.temperature)}
-
-    Repo.all(query)
-  end
-
-  defp temperature_hour(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('hour', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('hour', ?)", reading.date),
-          avg(reading.temperature)}
-
-    Repo.all(query)
-  end
-
-  defp temperature_day(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('day', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('day', ?)", reading.date),
-          avg(reading.temperature)}
+        select: {reading.date, reading.temperature}
 
     Repo.all(query)
   end
@@ -250,56 +114,22 @@ defmodule Miningbee.Statistics do
     group = Apiaries.stats_group_filter(params)
     time_frame = Apiaries.stats_time_frame(date, group)
 
+    interval = Apiaries.stats_data_padding(time_frame, date, group)
+
     with {:ok, hive_id} <- Apiaries.hive_id_filter(params) do
-      case group do
-        "minute" -> {:ok, humidity_minute(date, time_frame, hive_id)}
-        "hour" -> {:ok, humidity_hour(date, time_frame, hive_id)}
-        "day" -> {:ok, humidity_day(date, time_frame, hive_id)}
-      end
+      data = humidity_query(time_frame, date, hive_id)
+
+      Apiaries.merge_empty_data(interval, data, group)
     end
   end
 
-  defp humidity_minute(min_date, max_date, hive_id) do
+  defp humidity_query(min_date, max_date, hive_id) do
     query =
       from reading in Reading,
-        group_by: fragment("date_part('minute', ?)", reading.date),
         where: reading.date >= ^min_date,
         where: reading.date <= ^max_date,
         where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('minute', ?)", reading.date),
-          avg(reading.humidity)}
-
-    Repo.all(query)
-  end
-
-  defp humidity_hour(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('hour', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('hour', ?)", reading.date),
-          avg(reading.humidity)}
-
-    Repo.all(query)
-  end
-
-  defp humidity_day(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('day', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('day', ?)", reading.date),
-          avg(reading.humidity)}
+        select: {reading.date, reading.humidity}
 
     Repo.all(query)
   end
@@ -310,56 +140,22 @@ defmodule Miningbee.Statistics do
     group = Apiaries.stats_group_filter(params)
     time_frame = Apiaries.stats_time_frame(date, group)
 
+    interval = Apiaries.stats_data_padding(time_frame, date, group)
+
     with {:ok, hive_id} <- Apiaries.hive_id_filter(params) do
-      case group do
-        "minute" -> {:ok, accelerometer_minute(date, time_frame, hive_id)}
-        "hour" -> {:ok, accelerometer_hour(date, time_frame, hive_id)}
-        "day" -> {:ok, accelerometer_day(date, time_frame, hive_id)}
-      end
+      data = accelerometer_query(time_frame, date, hive_id)
+
+      Apiaries.merge_empty_data(interval, data, group)
     end
   end
 
-  defp accelerometer_minute(min_date, max_date, hive_id) do
+  defp accelerometer_query(min_date, max_date, hive_id) do
     query =
       from reading in Reading,
-        group_by: fragment("date_part('minute', ?)", reading.date),
         where: reading.date >= ^min_date,
         where: reading.date <= ^max_date,
         where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('minute', ?)", reading.date),
-          avg(reading.accelerometer)}
-
-    Repo.all(query)
-  end
-
-  defp accelerometer_hour(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('hour', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('hour', ?)", reading.date),
-          avg(reading.accelerometer)}
-
-    Repo.all(query)
-  end
-
-  defp accelerometer_day(min_date, max_date, hive_id) do
-    query =
-      from reading in Reading,
-        group_by: fragment("date_part('day', ?)", reading.date),
-        where: reading.date >= ^min_date,
-        where: reading.date <= ^max_date,
-        where: reading.hive_id == ^hive_id,
-        #order_by: reading.date,
-        select:
-          {fragment("date_part('day', ?)", reading.date),
-          avg(reading.accelerometer)}
+        select: {reading.date, reading.accelerometer}
 
     Repo.all(query)
   end

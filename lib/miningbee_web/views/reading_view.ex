@@ -9,14 +9,8 @@ defmodule MiningbeeWeb.ReadingView do
   # Later substitute by indivual reading Type View
   def render("reading.json", %{reading: reading}) do
     %{
-      id: reading.id,
-      temperature: reading.temperature,
-      pressure: reading.pressure,
-      light: reading.light,
-      noise: reading.noise,
-      humidity: reading.humidity,
-      accelerometer: reading.accelerometer,
-      date: reading.date
+      date: elem(reading, 0),
+      value: elem(reading, 1),
     }
   end
 end
