@@ -33,42 +33,42 @@ defmodule MiningbeeWeb.ReadingController do
   end
 
   defp light_stat(conn, params) do
-    with {:ok, readings} <- Statistics.light_stat(params) do
+    with readings <- Statistics.light_stat(params) do
       conn
       |> render("show.json", reading: readings)
     end
   end
 
   defp pressure_stat(conn, params) do
-    with {:ok, readings} <- Statistics.pressure_stat(params) do
+    with readings <- Statistics.pressure_stat(params) do
       conn
       |> render("show.json", reading: readings)
     end
   end
 
   defp noise_stat(conn, params) do
-    with {:ok, readings} <- Statistics.noise_stat(params) do
+    with readings <- Statistics.noise_stat(params) do
       conn
       |> render("show.json", reading: readings)
     end
   end
 
   defp temperature_stat(conn, params) do
-    with {:ok, readings} <- Statistics.temperature_stat(params) do
+    with readings <- Statistics.temperature_stat(params) do
       conn
       |> render("show.json", reading: readings)
     end
   end
 
   defp humidity_stat(conn, params) do
-    with {:ok, readings} <- Statistics.humidity_stat(params) do
+    with readings <- Statistics.humidity_stat(params) do
       conn
       |> render("show.json", reading: readings)
     end
   end
 
   defp accelerometer_stat(conn, params) do
-    with {:ok, readings} <- Statistics.accelerometer_stat(params) do
+    with readings <- Statistics.accelerometer_stat(params) do
       conn
       |> render("show.json", reading: readings)
     end
