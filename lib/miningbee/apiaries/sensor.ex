@@ -4,15 +4,18 @@ defmodule Miningbee.Apiaries.Sensor do
 
   alias Miningbee.Apiaries.Gateway
 
-  @primary_key {:hive_id, :binary_id, autogenerate: true}
-  @derive {Phoenix.Param, key: :hive_id}
+  #  @derive {Phoenix.Param, key: :hive_id}
+  @primary_key false
   schema "sensors" do
+    field :hive_id, :integer, primary_key: true
+
     field :topic, :string
 
     belongs_to :gateway, Gateway,
       foreign_key: :apiary_id,
       references: :apiary_id,
-      type: :binary_id
+      type: :binary_id,
+      primary_key: true
 
     timestamps()
   end
@@ -20,8 +23,12 @@ defmodule Miningbee.Apiaries.Sensor do
   # maybe check/validate topic format
   def changeset(sensor, attrs) do
     sensor
-    |> cast(attrs, [:topic, :apiary_id])
-    |> validate_required([:topic, :apiary_id])
+    |> cast(attrs, [:hive_id, :topic, :apiary_id])
+    |> unique_constraint(:apiary_hive_index,
+      name: :apiary_hive_index,
+      message: "An hive with that exists for that apiary"
+    )
+    |> validate_required([:topic, :apiary_id, :hive_id])
   end
 
   def update_changeset(sensor, attrs) do

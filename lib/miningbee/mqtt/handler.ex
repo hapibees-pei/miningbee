@@ -4,6 +4,9 @@ defmodule Miningbee.Mqtt.Handler do
 
   use Tortoise.Handler
 
+  alias Miningbee.Apiaries
+  alias Miningbee.Redis.Pool
+
   @impl true
   def init(_opts) do
     {:ok, []}
@@ -12,6 +15,7 @@ defmodule Miningbee.Mqtt.Handler do
   @impl true
   def connection(:up, state) do
     Logger.info("Connection has been established")
+
     {:ok, state}
   end
 
@@ -45,8 +49,28 @@ defmodule Miningbee.Mqtt.Handler do
   end
 
   @impl true
-  def handle_message(_topic, publish, state) do
-    Logger.info("Unsubscribed from #{publish}")
+  def handle_message(["gateway", gateway_id, "status"], publish, state) do
+    Logger.info("from #{gateway_id}: #{publish}")
+
+    add_gateway(gateway_id)
+    {:ok, state}
+  end
+
+  def handle_message(
+        ["gateway", gateway_id, "sensors", sensor_id, "status"],
+        publish,
+        state
+      ) do
+    Logger.info("from #{gateway_id}-\>#{sensor_id}: #{publish}")
+
+    add_sensor(gateway_id, sensor_id)
+    {:ok, state}
+  end
+
+  def handle_message(topic, publish, state) do
+    Logger.info("from #{topic}: #{publish}")
+
+    add_reading(topic, publish)
     {:ok, state}
   end
 
@@ -54,5 +78,36 @@ defmodule Miningbee.Mqtt.Handler do
   def terminate(reason, _state) do
     Logger.warn("Client has been terminated with reason: #{inspect(reason)}")
     :ok
+  end
+
+  defp device_id(topic), do: topic |> List.last()
+
+  defp add_reading(topic, publish) do
+    hive_id = device_id(topic)
+
+    Pool.command(["SET", hive_id, publish])
+
+    publish
+    |> Jason.decode!()
+    |> Map.put(:hive_id, hive_id)
+    |> Apiaries.create_reading()
+  end
+
+  defp add_gateway(gateway_id) do
+    %{apiary_id: gateway_id, topic: "gateway/#{gateway_id}"}
+    |> Apiaries.create_gateway()
+
+    Pool.command(["SET", gateway_id, "True"])
+  end
+
+  defp add_sensor(gateway_id, sensor_id) do
+    %{
+      apiary_id: gateway_id,
+      hive_id: sensor_id,
+      topic: "gateway/#{gateway_id}/sensor/#{sensor_id}"
+    }
+    |> Apiaries.create_sensor()
+
+    # TODO publish new sensors to backend
   end
 end
