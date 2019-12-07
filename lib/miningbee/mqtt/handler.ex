@@ -50,7 +50,7 @@ defmodule Miningbee.Mqtt.Handler do
 
   @impl true
   def handle_message(["gateway", gateway_id, "status"], publish, state) do
-    Logger.info("from #{tail}: #{publish}")
+    Logger.info("from #{gateway_id}: #{publish}")
 
     add_gateway(gateway_id)
     {:ok, state}
@@ -61,7 +61,7 @@ defmodule Miningbee.Mqtt.Handler do
         publish,
         state
       ) do
-    Logger.info("from #{tail}: #{publish}")
+    Logger.info("from #{gateway_id}-\>#{sensor_id}: #{publish}")
 
     add_sensor(gateway_id, sensor_id)
     {:ok, state}
@@ -82,8 +82,6 @@ defmodule Miningbee.Mqtt.Handler do
 
   defp device_id(topic), do: topic |> List.last()
 
-  defp hive_id(topic), do: topic |> List.last()
-
   defp add_reading(topic, publish) do
     hive_id = device_id(topic)
 
@@ -92,22 +90,24 @@ defmodule Miningbee.Mqtt.Handler do
     publish
     |> Jason.decode!()
     |> Map.put(:hive_id, hive_id)
-    |> Apiaries.create_readings()
+    |> Apiaries.create_reading()
   end
 
   defp add_gateway(gateway_id) do
-    # TODO
-    # This actually needsd to be an update. The gateway needs to be confirmed because the primary key is the supposely "gateway_id"
-    # To solve this circular depency we need to create the gateway and send the primary key alongside the broker information
-    # When the gateway connects we need to confirme that its connected
-    %{topic: "gateway/#{gateway_id}"}
+    %{apiary_id: gateway_id, topic: "gateway/#{gateway_id}"}
     |> Apiaries.create_gateway()
+
+    Pool.command(["SET", gateway_id, "True"])
   end
 
   defp add_sensor(gateway_id, sensor_id) do
-    # TODO
-    # Same as gateway, this should be an update
-    %{apiari_id: gateway_id, topic: "gateway/#{gateway_id}/sensor/#{sensor_id}"}
+    %{
+      apiary_id: gateway_id,
+      hive_id: sensor_id,
+      topic: "gateway/#{gateway_id}/sensor/#{sensor_id}"
+    }
     |> Apiaries.create_sensor()
+
+    # TODO publish new sensors to backend
   end
 end

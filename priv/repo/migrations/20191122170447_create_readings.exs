@@ -10,7 +10,8 @@ defmodule Miningbee.Repo.Migrations.CreateReadings do
       add :humidity, :float
       add :accelerometer, :float
 
-      add :hive_id, references(:sensors, column: :hive_id, type: :uuid)
+      # add :hive_id,
+      #    references(:sensors, column: :apiary_hive_index, type: :uuid)
 
       timestamps()
     end
