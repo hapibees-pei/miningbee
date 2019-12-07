@@ -32,7 +32,9 @@ defmodule Miningbee.Apiaries do
     Repo.all(Sensor)
   end
 
-  def get_sensor!(id), do: Repo.get!(Sensor, id)
+  def get_sensor!(apiary_id, hive_id) do
+    Repo.get_by(Sensor, apiary_id: apiary_id, hive_id: hive_id)
+  end
 
   def create_sensor(attrs \\ %{}) do
     %Sensor{}
@@ -68,14 +70,14 @@ defmodule Miningbee.Apiaries do
     Repo.delete(reading)
   end
 
-  def stats_date_filter(%{"date" => date} = params) do
+  def stats_date_filter(%{"date" => date} = _params) do
     # type used by JS (check if same as rails)
     with {:ok, parsed_date} <- Timex.parse!(date, "{RFC3339z}") do
       parsed_date
     end
   end
 
-  def stats_date_filter(params) do
+  def stats_date_filter(_params) do
     Timex.now()
   end
 
