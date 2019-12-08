@@ -93,14 +93,14 @@ defmodule Miningbee.Mqtt.Handler do
     |> Apiaries.create_reading()
   end
 
-  defp add_gateway(gateway_id) do
+  def add_gateway(gateway_id) do
     %{apiary_id: gateway_id, topic: "gateway/#{gateway_id}"}
     |> Apiaries.create_gateway()
 
     Pool.command(["SET", gateway_id, "True"])
   end
 
-  defp add_sensor(gateway_id, sensor_id) do
+  def add_sensor(gateway_id, sensor_id) do
     %{
       apiary_id: gateway_id,
       hive_id: sensor_id,

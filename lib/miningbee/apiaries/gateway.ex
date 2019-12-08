@@ -3,6 +3,7 @@ defmodule Miningbee.Apiaries.Gateway do
   import Ecto.Changeset
 
   alias Miningbee.Apiaries.Sensor
+  alias Miningbee.Apiaries.Reading
 
   @primary_key {:apiary_id, :binary_id, autogenerate: false}
   # @derive {Phoenix.Param, key: :apiary_id}
@@ -10,6 +11,12 @@ defmodule Miningbee.Apiaries.Gateway do
     field :topic, :string
 
     has_many :sensors, Sensor,
+      foreign_key: :apiary_id,
+      references: :apiary_id,
+      on_replace: :delete,
+      on_delete: :delete_all
+
+    has_many :readings, Reading,
       foreign_key: :apiary_id,
       references: :apiary_id,
       on_replace: :delete,

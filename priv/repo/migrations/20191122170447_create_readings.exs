@@ -14,10 +14,13 @@ defmodule Miningbee.Repo.Migrations.CreateReadings do
       add :apiary_id, references(:gateways, column: :apiary_id, type: :uuid),
         null: false
 
-      # add :hive_id,
-      #    references(:sensors, column: :apiary_hive_index, type: :uuid)
+      add :hive_id, :integer, null: false
 
       timestamps()
     end
+
+    create index(:readings, [:apiary_id, :hive_id],
+             name: :apiary_hive_reading_index
+           )
   end
 end
