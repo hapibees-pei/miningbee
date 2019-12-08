@@ -14,8 +14,6 @@ defmodule Miningbee.Repo.Migrations.CreateSensors do
       timestamps()
     end
 
-    create unique_index(:sensors, [:apiary_id, :hive_id],
-             name: :apiary_hive_index
-           )
+    create unique_index(:sensors, [:apiary_id, :hive_id], name: :apiary_hive_index)
   end
 end

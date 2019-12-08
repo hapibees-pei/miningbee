@@ -82,31 +82,31 @@ defmodule Miningbee.Apiaries do
   end
 
   def stats_time_frame(date, "minute") do
-    Timex.shift(date, hours: -1)
+    Timex.shift(date, minutes: -59)
   end
 
   def stats_time_frame(date, "hour") do
-    Timex.shift(date, days: -1)
+    Timex.shift(date, hours: -23)
   end
 
   def stats_time_frame(date, "day") do
     Timex.shift(date, weeks: -1)
   end
 
-  def stats_group_filter(%{"group" => group} = params) do
+  def stats_group_filter(%{"group" => group} = _params) do
     group
   end
 
-  def stats_group_filter(params) do
+  def stats_group_filter(_params) do
     "hour"
   end
 
-  def hive_id_filter(params) do
-    if Map.has_key?(params, "hive_id") do
-      Map.fetch(params, "hive_id")
-    else
-      {:error, :bad_request}
-    end
+  def params_filter(%{"hive_id" => hive_id, "apiary_id" => apiary_id} = _params) do
+    {hive_id, apiary_id}
+  end
+
+  def params_filter(_params) do
+    {:error, :bad_request}
   end
 
   def stats_data_padding(min_date, max_date, "minute") do
@@ -134,29 +134,40 @@ defmodule Miningbee.Apiaries do
   end
 
   def merge_empty_data(interval, data, field) do
-    (data ++ interval)
+    (interval ++ data)
     |> Enum.group_by(fn tuple -> get_field(tuple, field) end)
     |> Enum.map(fn {_, v} -> averagee(v) end)
     |> Enum.uniq_by(fn tuple -> get_field(tuple, field) end)
-    |> Enum.sort_by(fn {date, avg} -> {date, avg} end)
+    |> Enum.sort_by(& &1, &sort_date/2)
   end
 
-  def get_field({date, _}, "minute") do
+  defp get_field({date, _}, "minute") do
     date.minute
   end
 
-  def get_field({date, _}, "hour") do
+  defp get_field({date, _}, "hour") do
     date.hour
   end
 
-  def get_field({date, _}, "day") do
+  defp get_field({date, _}, "day") do
     date.day
   end
 
-  def averagee(v),
-    do:
-      {elem(hd(v), 0),
-       Enum.reduce(v, 0, fn {date, value}, acc -> value + acc end) / length(v)}
+  defp sort_date({date1, _avg1}, {date2, _avg2}) do
+    Timex.before?(date1, date2)
+  end
+
+  defp averagee(v) do
+    v =
+      if length(v) > 1 do
+        tl(v)
+      else
+        v
+      end
+
+    {elem(hd(v), 0),
+     Enum.reduce(v, 0, fn {_date, value}, acc -> value + acc end) / length(v)}
+  end
 
   def valid_stat_query?(query) do
     valid_querys = [

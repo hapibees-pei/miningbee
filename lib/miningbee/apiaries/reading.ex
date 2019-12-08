@@ -15,10 +15,6 @@ defmodule Miningbee.Apiaries.Reading do
     field :temperature, :float
     field :date, :utc_datetime
 
-    #    belongs_to :sensor, Sensor,
-    #      foreign_key: :hive_id,
-    #      type: :integer
-
     belongs_to :gateway, Gateway,
       foreign_key: :apiary_id,
       references: :apiary_id,

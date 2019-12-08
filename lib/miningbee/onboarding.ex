@@ -1,10 +1,9 @@
 defmodule Miningbee.Onboarding do
-
   alias Miningbee.Onboarding.TcpClient
 
   def create_onboarding(ip, port, uuid) do
     # ip must be inside '' and not "" because of Erlang
-    with {:ok, _pid} = TcpClient.start(to_charlist(ip), port, uuid) do
+    with {:ok, _pid} <- TcpClient.start(to_charlist(ip), port, uuid) do
       {:ok, "onboarding started"}
     end
   end

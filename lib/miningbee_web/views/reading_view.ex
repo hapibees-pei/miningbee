@@ -10,7 +10,7 @@ defmodule MiningbeeWeb.ReadingView do
   def render("reading.json", %{reading: reading}) do
     %{
       date: elem(reading, 0),
-      value: elem(reading, 1),
+      value: elem(reading, 1)
     }
   end
 end
