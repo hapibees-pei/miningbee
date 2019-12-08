@@ -19,6 +19,8 @@ defmodule MiningbeeWeb.Router do
 
       # Readinsg Statistics
       get "/readings", ReadingController, :show
+
+      post "/onboarding", OnboardingController, :create
     end
   end
 end
