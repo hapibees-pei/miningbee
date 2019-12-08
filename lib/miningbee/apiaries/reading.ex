@@ -12,8 +12,8 @@ defmodule Miningbee.Apiaries.Reading do
     field :date, :utc_datetime
 
     belongs_to :sensor, Sensor,
-      foreign_key: :hive_id,
-      references: :hive_id,
+      foreign_key: :apiary_id,
+      references: :apiary_id,
       type: :binary_id
 
     timestamps()
@@ -22,7 +22,7 @@ defmodule Miningbee.Apiaries.Reading do
   def changeset(reading, attrs) do
     reading
     |> cast(attrs, [
-      :hive_id,
+      :apiary_id,
       :temperature,
       :pressure,
       :light,
@@ -32,7 +32,7 @@ defmodule Miningbee.Apiaries.Reading do
       :date
     ])
     |> validate_required([
-      :hive_id,
+      :apiary_id,
       :temperature,
       :pressure,
       :light,

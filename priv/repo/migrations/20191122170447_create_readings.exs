@@ -11,6 +11,9 @@ defmodule Miningbee.Repo.Migrations.CreateReadings do
       add :accelerometer, :float
       add :date, :utc_datetime
 
+      add :apiary_id, references(:gateways, column: :apiary_id, type: :uuid),
+        null: false
+
       # add :hive_id,
       #    references(:sensors, column: :apiary_hive_index, type: :uuid)
 
