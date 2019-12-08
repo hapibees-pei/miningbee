@@ -28,8 +28,8 @@ defmodule Miningbee.Apiaries do
   end
 
   ## SENSORS
-  def list_sensors do
-    Repo.all(Sensor)
+  def list_sensors(gateway_id) do
+    Repo.get_by!(Sensor, apiary_id: gateway_id)
   end
 
   def get_sensor!(apiary_id, hive_id) do
@@ -136,7 +136,7 @@ defmodule Miningbee.Apiaries do
   def merge_empty_data(interval, data, field) do
     (data ++ interval)
     |> Enum.group_by(fn tuple -> get_field(tuple, field) end)
-    |> Enum.map(fn {k, v} -> averagee(v) end)
+    |> Enum.map(fn {_, v} -> averagee(v) end)
     |> Enum.uniq_by(fn tuple -> get_field(tuple, field) end)
     |> Enum.sort_by(fn {date, avg} -> {date, avg} end)
   end

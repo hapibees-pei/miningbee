@@ -2,7 +2,11 @@ defmodule Miningbee.Apiaries.Reading do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias Miningbee.Apiaries.Gateway
+  alias Miningbee.Apiaries.Sensor
+
   schema "readings" do
+    field :hive_id, :integer
     field :accelerometer, :float
     field :humidity, :float
     field :light, :float
@@ -11,9 +15,13 @@ defmodule Miningbee.Apiaries.Reading do
     field :temperature, :float
     field :date, :utc_datetime
 
-    belongs_to :sensor, Sensor,
-      foreign_key: :hive_id,
-      references: :hive_id,
+    #    belongs_to :sensor, Sensor,
+    #      foreign_key: :hive_id,
+    #      type: :integer
+
+    belongs_to :gateway, Gateway,
+      foreign_key: :apiary_id,
+      references: :apiary_id,
       type: :binary_id
 
     timestamps()
@@ -22,6 +30,7 @@ defmodule Miningbee.Apiaries.Reading do
   def changeset(reading, attrs) do
     reading
     |> cast(attrs, [
+      :apiary_id,
       :hive_id,
       :temperature,
       :pressure,
@@ -32,6 +41,7 @@ defmodule Miningbee.Apiaries.Reading do
       :date
     ])
     |> validate_required([
+      :apiary_id,
       :hive_id,
       :temperature,
       :pressure,
