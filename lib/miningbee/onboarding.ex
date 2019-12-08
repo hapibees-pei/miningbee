@@ -4,8 +4,7 @@ defmodule Miningbee.Onboarding do
 
   def create_onboarding(ip, port, uuid) do
     # ip must be inside '' and not "" because of Erlang
-    with {:ok, sock} = TcpClient.start_link(ip, port) do 
-      IO.inspect TcpClient.schedule_work(0, sock, uuid)
+    with {:ok, _pid} = TcpClient.start(to_charlist(ip), port, uuid) do
       {:ok, "onboarding started"}
     end
   end
