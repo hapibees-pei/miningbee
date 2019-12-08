@@ -1,18 +1,33 @@
 defmodule Miningbee.Onboarding.TcpClient do
   use GenServer
+  alias Miningbee.Mqtt.Connection
 
-  def start_link() do
-    ip = Application.get_env(:tcp_server, :ip, {127, 0, 0, 1})
-    port = Application.get_env(:tcp_server, :port, 6666)
+  def start_link(ip, port) do
     GenServer.start_link(__MODULE__, [ip, port], [])
   end
 
   def init([ip, port]) do
-    {:ok, listen_socket} =
-      :gen_tcp.listen(port, [:binary, {:packet, 0}, {:active, true}, {:ip, ip}])
+    :gen_tcp.connect(ip, port, [:binary, {:packet, 0}])
+  end
 
-    {:ok, socket} = :gen_tcp.accept(listen_socket)
-    {:ok, %{ip: ip, port: port, socket: socket}}
+  def announce_gateway(sock, uuid) do
+    broker_ip = Connection.host()
+    broker_port = Connection.port()
+    :gen_tcp.send(sock, "{\"ip\": #{broker_ip}, \"port\": #{broker_port}, \"uuid\": #{uuid}}")
+  end
+
+  def schedule_work(period, sock, uuid) do
+    Process.send_after(self(), {:work, sock, uuid}, period)
+  end
+
+  def handle_info({:work, sock, uuid}, state) do
+    announce_gateway(sock, uuid)
+    schedule_work(60000, sock, uuid)
+    {:noreply, state}
+  end
+
+  def handle_info({:tcp, _socket, "success"}, _state) do
+    GenServer.stop(__MODULE__)
   end
 
   def handle_info({:tcp, socket, packet}, state) do
@@ -21,7 +36,7 @@ defmodule Miningbee.Onboarding.TcpClient do
     {:noreply, state}
   end
 
-  def handle_info({:tcp_closed, socket}, state) do
+  def handle_info({:tcp_closed, _socket}, state) do
     IO.inspect("Socket has been closed")
     {:noreply, state}
   end

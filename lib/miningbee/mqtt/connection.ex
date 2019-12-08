@@ -28,11 +28,11 @@ defmodule Miningbee.Mqtt.Connection do
     Application.get_env(:miningbee, __MODULE__)[:client_id]
   end
 
-  defp host do
+  def host do
     Application.get_env(:miningbee, __MODULE__)[:host]
   end
 
-  defp port do
+  def port do
     Application.get_env(:miningbee, __MODULE__)[:port]
   end
 
