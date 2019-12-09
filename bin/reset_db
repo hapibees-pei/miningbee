@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+set -e
+. "./bin/functions"
+docker-compose up -d
+mix ecto.drop
+mix ecto.setup
