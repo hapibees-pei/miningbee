@@ -26,7 +26,7 @@ defmodule Miningbee.Onboarding.TcpClient do
     case :gen_tcp.connect(ip, port, [:binary, {:packet, 0}]) do
       {:ok, socket} ->
         Process.send_after(self(), :work, 0)
-        {:ok, %{uuid: uuid, socket: socket}}
+        {:noreply, %{uuid: uuid, socket: socket}}
 
       {:error, _reason} ->
         {:stop, :normal, state}
@@ -54,7 +54,7 @@ defmodule Miningbee.Onboarding.TcpClient do
     {:noreply, state}
   end
 
-  def handle_info({:tcp_error, socket, reason}, state) do
+  def handle_info({:tcp_error, _socket, reason}, state) do
     Logger.info("connection closed due to #{reason}")
     {:noreply, state}
   end
@@ -65,7 +65,7 @@ defmodule Miningbee.Onboarding.TcpClient do
 
     :gen_tcp.send(
       sock,
-      "{\"ip\": #{broker_ip}, \"port\": #{broker_port}, \"uuid\": #{uuid}}"
+      "{\"ip\": \"#{broker_ip}\", \"port\": #{broker_port}, \"uuid\": \"#{uuid}\"}"
     )
   end
 
