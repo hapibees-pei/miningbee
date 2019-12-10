@@ -93,8 +93,16 @@ defmodule Miningbee.Apiaries do
     Timex.shift(date, weeks: -1)
   end
 
-  def stats_group_filter(%{"group" => group} = _params) do
-    group
+  def stats_group_filter(%{"group" => "minute"} = _params) do
+    "minute"
+  end
+
+  def stats_group_filter(%{"group" => "hour"} = _params) do
+    "hour"
+  end
+
+  def stats_group_filter(%{"group" => "day"} = _params) do
+    "day"
   end
 
   def stats_group_filter(_params) do

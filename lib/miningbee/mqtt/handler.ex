@@ -67,10 +67,14 @@ defmodule Miningbee.Mqtt.Handler do
     {:ok, state}
   end
 
-  def handle_message(topic, publish, state) do
+  def handle_message(
+        ["gateway", gateway_id, "sensors", sensor_id] = topic,
+        publish, 
+        state
+      ) do
     Logger.info("from #{topic}: #{publish}")
 
-    add_reading(topic, publish)
+    add_reading(gateway_id, sensor_id, publish)
     {:ok, state}
   end
 
@@ -80,16 +84,14 @@ defmodule Miningbee.Mqtt.Handler do
     :ok
   end
 
-  defp device_id(topic), do: topic |> List.last()
+  defp add_reading(gateway_id, sensor_id, publish) do
 
-  defp add_reading(topic, publish) do
-    hive_id = device_id(topic)
-
-    Pool.command(["SET", hive_id, publish])
+    Pool.command(["SET", gateway_id <> "/" <> sensor_id, publish])
 
     publish
     |> Jason.decode!()
-    |> Map.put(:hive_id, hive_id)
+    |> Map.put("apiary_id", gateway_id)
+    |> Map.put("hive_id", sensor_id)
     |> Apiaries.create_reading()
   end
 
