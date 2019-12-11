@@ -86,7 +86,7 @@ defmodule Miningbee.Mqtt.Handler do
 
   defp add_reading(gateway_id, sensor_id, publish) do
 
-    Pool.command(["SET", gateway_id <> "/" <> sensor_id, publish])
+    Pool.command(["SET", "apiary:#{gateway_id}/sensor:#{sensor_id}", publish])
 
     publish
     |> Jason.decode!()
@@ -99,7 +99,7 @@ defmodule Miningbee.Mqtt.Handler do
     %{apiary_id: gateway_id, topic: "gateway/#{gateway_id}"}
     |> Apiaries.create_gateway()
 
-    Pool.command(["SET", gateway_id, "True"])
+    Pool.command(["SET", "apiary:#{gateway_id}:status", "true"])
   end
 
   def add_sensor(gateway_id, sensor_id) do
