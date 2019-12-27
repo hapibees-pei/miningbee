@@ -6,8 +6,17 @@ defmodule MiningbeeWeb.SensorController do
   action_fallback MiningbeeWeb.FallbackController
 
   def index(conn, %{"gateway_id" => gateway_id} = _params) do
-    sensors = Apiaries.list_sensors(gateway_id)
-    render(conn, "index.json", sensors: sensors)
+    case Ecto.UUID.dump(gateway_id) do
+      :error ->
+        {:error, :bad_request}
+      {:ok, _gateway} ->
+        case Apiaries.list_sensors(gateway_id) do
+          [] ->
+            {:error, :not_found}
+          sensors ->
+            render(conn, "index.json", sensors: sensors)
+        end
+    end
   end
 
   def index(conn, _params) do

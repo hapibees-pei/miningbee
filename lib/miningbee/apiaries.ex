@@ -29,7 +29,10 @@ defmodule Miningbee.Apiaries do
 
   ## SENSORS
   def list_sensors(gateway_id) do
-    Repo.get_by!(Sensor, apiary_id: gateway_id)
+    query = from sensor in Sensor,
+      where: sensor.apiary_id == ^gateway_id
+
+    Repo.all(query)
   end
 
   def get_sensor!(apiary_id, hive_id) do
