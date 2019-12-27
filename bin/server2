@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+
+set -e
+. "./bin/functions"
+
+docker_state=$(docker info >/dev/null 2>&1)
+if [[ $? -ne 0 ]]; then
+
+
+  pp_error "server" "
+  Docker does not seem to be running, run it first and retry
+  "
+  exit 1
+fi
+
+docker-compose up -d
+pp_info "server" "Starting development server..."
+mix phx.server
